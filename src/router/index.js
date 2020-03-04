@@ -3,6 +3,9 @@ import Router from 'vue-router';
 import store from '../store'
 
 import Home from '../views/Home'
+import Character from '../views/Character'
+import Characters from '../views/Characters'
+import Versus from '../views/Versus'
 import Settings from '../views/Settings'
 import hasValidApiToken from './middleware/hasValidApiToken';
 
@@ -14,11 +17,41 @@ const router = new Router({
 			path: "/home",
 			name: 'home',
 			component: Home,
-			meta: {
-				middleware: [
-					hasValidApiToken
-				]
-			}
+			// meta: {
+			// 	middleware: [
+			// 		hasValidApiToken
+			// 	]
+			// }
+		},
+		{
+			path: "/character/:me/vs/:opponent",
+			name: 'versus',
+			component: Versus,
+			// meta: {
+			// 	middleware: [
+			// 		hasValidApiToken
+			// 	]
+			// }
+		},
+		{
+			path: "/character/:me",
+			name: 'character',
+			component: Character,
+			// meta: {
+			// 	middleware: [
+			// 		hasValidApiToken
+			// 	]
+			// }
+		},
+		{
+			path: "/characters",
+			name: 'characters',
+			component: Characters,
+			// meta: {
+			// 	middleware: [
+			// 		hasValidApiToken
+			// 	]
+			// }
 		},
 		{
 			path: "/settings",
@@ -34,22 +67,22 @@ const router = new Router({
 
 // TODO: If more complicated middleware is needed, try this:
 // https://blog.logrocket.com/vue-middleware-pipelines/
-router.beforeEach((to, from, next) => {
-	if (!to.meta.middleware) {
-		return next()
-	}
-	const middleware = to.meta.middleware
+// router.beforeEach((to, from, next) => {
+// 	if (!to.meta.middleware) {
+// 		return next()
+// 	}
+// 	const middleware = to.meta.middleware
 
-	const context = {
-		to,
-		from,
-		next,
-		store
-	}
+// 	const context = {
+// 		to,
+// 		from,
+// 		next,
+// 		store
+// 	}
 	
-	return middleware[0]({
-		...context
-	})
-})
+// 	return middleware[0]({
+// 		...context
+// 	})
+// })
 
 export default router
