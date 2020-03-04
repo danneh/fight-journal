@@ -17,32 +17,32 @@ require('electron-reload')(__dirname, {
 let mainWindow;
 
 const createWindow = () => {
-// Create the browser window.
-mainWindow = new BrowserWindow({
-	minWidth: 900,
-	minHeight: 500,
-	width: 1200,
-	height: 715,
-	titleBarStyle: 'hidden',
-	webPreferences: {
-		nodeIntegration: true
-	}
-});
-mainWindow.removeMenu()
+	// Create the browser window.
+	mainWindow = new BrowserWindow({
+		minWidth: 900,
+		minHeight: 500,
+		width: 1200,
+		height: 715,
+		titleBarStyle: 'hiddenInset',
+		webPreferences: {
+			nodeIntegration: true
+		}
+	});
+	mainWindow.removeMenu()
 
-// and load the index.html of the app.
-mainWindow.loadURL(`file://${__dirname}/index.html`);
+	// and load the index.html of the app.
+	mainWindow.loadURL(`file://${__dirname}/index.html`);
 
-// Open the DevTools.
-app.isPackaged || mainWindow.webContents.openDevTools();
+	// Open the DevTools.
+	app.isPackaged || mainWindow.webContents.openDevTools();
 
-// Emitted when the window is closed.
-mainWindow.on('closed', () => {
-	// Dereference the window object, usually you would store windows
-	// in an array if your app supports multi windows, this is the time
-	// when you should delete the corresponding element.
-	mainWindow = null;
-});
+	// Emitted when the window is closed.
+	mainWindow.on('closed', () => {
+		// Dereference the window object, usually you would store windows
+		// in an array if your app supports multi windows, this is the time
+		// when you should delete the corresponding element.
+		mainWindow = null;
+	});
 };
 
 // This method will be called when Electron has finished
