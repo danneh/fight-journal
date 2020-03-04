@@ -12,8 +12,12 @@ mix.webpackConfig({
 
 mix.js('src/app.js', 'dist/')
 mix.postCss('src/styles.css', 'dist/', [
-	require('tailwindcss')
+	require('postcss-nested'),
+	require('tailwindcss'),
 ])
+mix.options({
+	processCssUrls: false,
+})
 // Full API
 // mix.js(src, output);
 // mix.react(src, output); <-- Identical to mix.js(), but registers React Babel compilation.
