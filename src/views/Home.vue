@@ -1,6 +1,7 @@
 <template>
-	<div class="p-4">
-		home
+	<div class="home p-4">
+		Hem
+		<!-- <img src="img/bg-ryu-chunli.jpg" alt=""> -->
 	</div>
 </template>
 
@@ -13,3 +14,7 @@ export default {
 	}
 }
 </script>
+
+<style>
+
+</style>
