@@ -21,7 +21,8 @@ export default {
 	}),
 	created() {
 		if (ipcRenderer.sendSync('get-setting', 'apiToken')) {
-			this.init()
+			this.initializing = false
+			// this.init()
 		} else {
 			this.initializing = false
 		}
@@ -43,7 +44,7 @@ export default {
 			this.notifyInfo('Connecting...', 'Connecting...', true)
 			this.$store.dispatch('users/getCurrentUser').then(response => {
 				if (200 === response.status) {
-					router.push('settings') // TODO default to home
+					router.push('home') // TODO default to home
 					this.notifySuccess('token-ok', 'Success. Logged in.', true)
 				}
 				this.initializing = false

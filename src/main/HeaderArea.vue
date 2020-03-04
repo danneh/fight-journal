@@ -1,9 +1,9 @@
 <template>
-	<div class="bg-gray-400 w-full flex justify-between items-center h-12" style="-webkit-app-region: drag">
-		<div class="py-1 px-4">
-			Electron Vue Starter
+	<div class="bg-gray-800 text-white w-full flex justify-between items-center h-12 flex-shrink-0" style="-webkit-app-region: drag">
+		<div class="py-1 px-4 font-bold uppercase tracking-widest"  style="-webkit-user-select: none">
+			Fight Journal
 		</div>
-		<div class="h-full">
+		<!-- <div class="h-full">
 			<template v-if="user">
 				<button
 					@click="openUserMenu()"
@@ -28,7 +28,7 @@
 					/>Not logged in
 				</span>
 			</template>
-		</div>
+		</div> -->
 	</div>
 </template>
 
