@@ -1,7 +1,7 @@
 <template>
 	<div class="p-4 max-w-5xl flex-grow">
 		<h1 class="text-black font-bold mb-4">Settings</h1>
-		<form
+		<!-- <form
 			@submit.prevent="verifyUserApi()"
 			class="rounded-lg bg-gray-100 w-full p-6">
 			<label
@@ -29,12 +29,32 @@
 			</div>
 			<p v-if="maybeTokenError"><small class="text-red-500">This API token needs to be vefified.</small></p>
 			<p v-else><small v-if="apiToken.length" class="text-green-700">API token is valid.</small></p>
+		</form> -->
+		<form
+			@submit.prevent="handleExport()"
+			class="rounded-lg bg-gray-100 w-full p-6">
+			<label
+				class="block"><small class="font-bold uppercase">Export Scores to file</small>
+			</label>
+			<div class="flex">
+				<button
+					type="submit"
+					class="w-24 bg-gray-600 border border-gray-500 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded inline-flex justify-center items-center focus:outline-none">
+						<font-awesome-icon
+							v-if="exporting"
+							:icon="loadingIcon"
+							spin
+							class="spin"
+						/>
+						<span v-else>Export</span>
+				</button>
+			</div>
 		</form>
 	</div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 const { ipcRenderer } = require('electron')
@@ -42,7 +62,8 @@ export default {
 	data() {
 		return {
 			loadingIcon: faSpinner,
-			verifying: false
+			verifying: false,
+			exporting: false,
 		}
 	},
 	computed: {
@@ -55,6 +76,9 @@ export default {
 		})
 	},
 	methods: {
+		...mapActions('scores', {
+			exportScores: 'export',
+		}),
 		updateApiToken(e) {
 			this.$store.commit('settings/updateApiToken', e.target.value)
 		},
@@ -75,7 +99,21 @@ export default {
 				this.verifying = false
 
 			})
+		},
+		async handleExport() {
+
+			this.exporting = true;
+			const result = await this.exportScores();
+			
+			if ( result.message === 'success') {
+				this.notifySuccess('export-success', 'Success. File Exported.', true);
+			}
+			if (result.message === 'failed') {
+				this.notifyError('export-success', 'Failed. Something went wrong.', true);
+			}
+			this.exporting = false;
 		}
+		
 	},
 	components: {
     	FontAwesomeIcon

@@ -5,7 +5,8 @@ import store from '../store'
 import Home from '../views/Home'
 import Character from '../views/Character'
 import Characters from '../views/Characters'
-import Versus from '../views/Versus'
+import Scoreboard from '../views/Scoreboard'
+import Stats from '../views/Stats'
 import Settings from '../views/Settings'
 import hasValidApiToken from './middleware/hasValidApiToken';
 
@@ -24,9 +25,9 @@ const router = new Router({
 			// }
 		},
 		{
-			path: "/character/:me/vs/:opponent",
-			name: 'versus',
-			component: Versus,
+			path: "/character/:player/vs/:opponent",
+			name: 'scoreboard',
+			component: Scoreboard,
 			// meta: {
 			// 	middleware: [
 			// 		hasValidApiToken
@@ -34,7 +35,7 @@ const router = new Router({
 			// }
 		},
 		{
-			path: "/character/:me",
+			path: "/character/:player",
 			name: 'character',
 			component: Character,
 			// meta: {
@@ -47,6 +48,16 @@ const router = new Router({
 			path: "/characters",
 			name: 'characters',
 			component: Characters,
+			// meta: {
+			// 	middleware: [
+			// 		hasValidApiToken
+			// 	]
+			// }
+		},
+		{
+			path: "/stats",
+			name: 'stats',
+			component: Stats,
 			// meta: {
 			// 	middleware: [
 			// 		hasValidApiToken

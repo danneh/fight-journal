@@ -5,8 +5,9 @@ import { MainApp } from './main'
 
 Vue.config.devtools = true
 Vue.component('main-app-component', MainApp)
-const Deploykit = new Vue({ router, store }).$mount('#app')
+const Deploykit = new Vue({ el: '#app', router, store });
 
-window.Deploykit = { Deploykit, MainApp }
+window.Deploykit = Deploykit;
+window.MainApp = MainApp;
 
 export { Deploykit, MainApp }

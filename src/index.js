@@ -5,7 +5,7 @@ const path = require('path')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-	app.quit();
+	return app.quit();
 }
 
 require('electron-reload')(__dirname, {
@@ -52,7 +52,7 @@ app.on('ready', () => {
 
 	// Vuejs dev tools
 	if (!app.isPackaged) {
-		require('vue-devtools').install()
+		// require('vue-devtools').install()
 	}
 
 	// Load the window
@@ -85,4 +85,7 @@ ipcMain.on('get-setting', (event, arg) => {
 ipcMain.on('set-setting', (event, arg) => {
 	store.set(arg.option, arg.value)
 	event.returnValue = 'OK'
+})
+ipcMain.on('get-store-path', (event) => {
+	event.returnValue = store.path
 })

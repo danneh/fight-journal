@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-gray-800 text-white w-full flex justify-between items-center h-12 flex-shrink-0" style="-webkit-app-region: drag">
-		<div class="py-1 px-4 font-bold uppercase tracking-widest"  style="-webkit-user-select: none">
-			Fight Journal
+		<div class="flex items-center py-1 px-4 font-bold uppercase tracking-widest"  style="-webkit-user-select: none">
+			<img class="block w-10 mr-4" src="img/sfvce-logo.png" alt="Street Fighter V"> <span>Fight Journal</span>
 		</div>
 		<!-- <div class="h-full">
 			<template v-if="user">
