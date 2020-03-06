@@ -4,13 +4,14 @@ module.exports = {
 		{
 			"name": "@electron-forge/maker-squirrel",
 			"config": {
-				"name": "Electron Vue Starter"
+				"name": "Fight Journal"
 			}
 		},
 		{
 			"name": "@electron-forge/maker-zip",
 			"platforms": [
-				"darwin"
+				"darwin",
+				"win32"
 			]
 		},
 		{
