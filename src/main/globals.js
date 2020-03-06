@@ -21,7 +21,7 @@ Vue.mixin({
 			console.log('WP DeployKit:', message)
 			EventManager.$emit(id, message)
 			toast && this.notify.fire({
-				type: 'info',
+				// type: 'info',
 				title: 'string' === typeof message ? message : this.__('Doing something...', 'ml-slider')
 			})
 		},
@@ -29,7 +29,7 @@ Vue.mixin({
 			console.warn('WP DeployKit:', message)
 			EventManager.$emit(id, message)
 			toast && this.notify.fire({
-				type: 'warning',
+				// type: 'warning',
 				title: 'string' === typeof message ? message : this.__('No error message provided.', 'ml-slider')
 			})
 		},
@@ -37,7 +37,7 @@ Vue.mixin({
 			console.log('WP DeployKit:', message)
 			EventManager.$emit(id, message)
 			toast && this.notify.fire({
-				type: 'success',
+				// type: 'success',
 				title: 'string' === typeof message ? message : this.__('Success', 'ml-slider')
 			})
 		},
@@ -47,7 +47,7 @@ Vue.mixin({
 			toast && this.notify.fire({
 				showConfirmButton: true,
 				timer: null,
-				type: 'error',
+				// type: 'error',
 				title: 'string' === typeof message ? message : this.__('Error', 'ml-slider')
 			})
 		}
