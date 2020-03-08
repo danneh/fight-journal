@@ -1,10 +1,12 @@
+const osTerminal = process.platform === 'win32' ? 'cmd' : 'bash';
 module.exports = {
 	"packagerConfig": {},
 	"makers": [
 		{
 			"name": "@electron-forge/maker-squirrel",
 			"config": {
-				"name": "Fight Journal"
+				"name": "FightJournal",
+
 			}
 		},
 		{
@@ -26,7 +28,7 @@ module.exports = {
 	hooks: {
 		postStart: async () => {
 			if ('start' === process.env.npm_lifecycle_event) {
-				terminal = require('child_process').spawn('bash')
+				terminal = require('child_process').spawn(osTerminal)
 				setTimeout(function () {
 					terminal.stdin.write('npm run mix-watch\n')
 					terminal.stdin.end()
@@ -48,7 +50,7 @@ module.exports = {
 		},
 		generateAssets: async () => {
 			if ('make' === process.env.npm_lifecycle_event) {
-				terminal = require('child_process').spawn('bash')
+				terminal = require('child_process').spawn(osTerminal)
 				setTimeout(function () {
 					terminal.stdin.write('npm run mix-build\n')
 					terminal.stdin.end()

@@ -5,7 +5,7 @@ const path = require('path')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-	return app.quit();
+	app.quit();
 }
 
 require('electron-reload')(__dirname, {
@@ -31,7 +31,7 @@ const createWindow = () => {
 	mainWindow.removeMenu()
 
 	// and load the index.html of the app.
-	mainWindow.loadURL(`file://${__dirname}/index.html`);
+	mainWindow.loadURL(path.join(__dirname, 'index.html'));
 
 	// Open the DevTools.
 	app.isPackaged || mainWindow.webContents.openDevTools();
