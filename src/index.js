@@ -3,6 +3,8 @@ const Store = require('electron-store');
 const store = new Store();
 const path = require('path')
 
+app.allowRendererProcessReuse = true;
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
 	app.quit();
@@ -31,10 +33,12 @@ const createWindow = () => {
 	mainWindow.removeMenu()
 
 	// and load the index.html of the app.
-	mainWindow.loadURL(path.join(__dirname, 'index.html'));
+	mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
 	// Open the DevTools.
-	app.isPackaged || mainWindow.webContents.openDevTools();
+	mainWindow.webContents.once('dom-ready', () => {
+		app.isPackaged || mainWindow.webContents.openDevTools();
+	})
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', () => {

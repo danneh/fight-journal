@@ -27,9 +27,9 @@ module.exports = {
 	],
 	hooks: {
 		postStart: async () => {
-			if ('start' === process.env.npm_lifecycle_event) {
+			if (process.env.npm_lifecycle_event === 'start') {
 				terminal = require('child_process').spawn(osTerminal)
-				setTimeout(function () {
+				setTimeout(() => {
 					terminal.stdin.write('npm run mix-watch\n')
 					terminal.stdin.end()
 				}, 1000)
@@ -39,7 +39,7 @@ module.exports = {
 				})
 
 				terminal.stderr.on('data', data => {
-					console.log(`${data}`)
+					// console.log(`Error: ${data}`)
 				})
 
 				terminal.on('close', code => {
@@ -49,12 +49,12 @@ module.exports = {
 			return true
 		},
 		generateAssets: async () => {
-			if ('make' === process.env.npm_lifecycle_event) {
+			if (process.env.npm_lifecycle_event === 'make') {
 				terminal = require('child_process').spawn(osTerminal)
 				setTimeout(function () {
 					terminal.stdin.write('npm run mix-build\n')
 					terminal.stdin.end()
-					return true
+					// return true
 				}, 1000)
 
 				terminal.stdout.on('data', data => {
@@ -62,7 +62,7 @@ module.exports = {
 				})
 
 				terminal.stderr.on('data', data => {
-					console.log(`${data}`)
+					// console.log(`${data}`)
 				})
 
 				terminal.on('close', code => {
