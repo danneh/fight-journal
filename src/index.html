@@ -10,9 +10,12 @@
 		<main-app-component inline-template>
 			<div
 				v-if="initializing"
-				class="flex w-full h-full justify-center items-center"
+				class="flex w-full h-full justify-center items-center text-white"
 				style="-webkit-app-region: drag">
-				Loading...
+				<!-- Loading... -->
+				<div>
+					<img src="img/preloader.gif" alt="Spinner">
+				</div>
 			</div>
 			<div class="flex h-full" v-else>
 				<sidebar-navigation></sidebar-navigation>
