@@ -56,7 +56,7 @@ app.on('ready', () => {
 
 	// Vuejs dev tools
 	if (!app.isPackaged) {
-		// require('vue-devtools').install()
+		require('vue-devtools').install()
 	}
 
 	// Load the window
@@ -88,6 +88,12 @@ ipcMain.on('get-setting', (event, arg) => {
 })
 ipcMain.on('set-setting', (event, arg) => {
 	store.set(arg.option, arg.value)
+	event.returnValue = 'OK'
+})
+ipcMain.on('delete-setting', (event, arg) => {
+	console.log('Deleting setting', arg.option);
+	
+	store.delete(arg.option)
 	event.returnValue = 'OK'
 })
 ipcMain.on('get-store-path', (event) => {

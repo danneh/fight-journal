@@ -48,6 +48,20 @@ const router = new Router({
 			path: "/characters",
 			name: 'characters',
 			component: Characters,
+			beforeEnter: (to, from, next) => {
+				const locked = store.getters['settings/locked'];
+				console.log(locked);
+				
+				if (locked) {
+					return next({
+						name: 'character',
+						params: {
+							player: locked,
+						},
+					})
+				}
+				return next();
+			},
 			// meta: {
 			// 	middleware: [
 			// 		hasValidApiToken

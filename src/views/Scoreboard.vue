@@ -1,7 +1,6 @@
 <template>
       <div class="relative h-full flex items-center justify-center">
           <div class="scoreboard">
-            <!-- <h1 class="text-5xl text-white font-bold uppercase">{{ hero }} <span class="lowercase">vs.</span> {{ opponent }}</h1> -->
             <div class="scoreboard-header">
                 <div class="scoreboard-name --small"></div>
                 <div class="scoreboard-counter --small">round</div>
@@ -20,12 +19,11 @@
                 <div class="scoreboard-counter">{{ score.set.opponent }}</div>
                 <div class="scoreboard-result">{{ score.match.opponent }}</div>
             </div>
-            <div v-if="score.winner" class="scoreboard-finished">
+            <div class="scoreboard-finished">
                 <input class="w-full px-3 py-2 border-2 border-gray-700 bg-gray-800 text-white" type="text" placeholder="Give a quick comment on the fight..." v-model="comment" />
-                {{ comment }}
                 <div class="scoreboard-controlls">
-                    <button @click="handleSave" class="m-2 inline-block rounded px-3 py-2 text-white bg-gray-500">Save</button>
-                    <button @click="handleReset" class="m-2 inline-block rounded px-3 py-2 text-white bg-gray-500">Reset</button>
+                    <button @click="handleSave" class="m-2 inline-block rounded border-2 border-gray-700 px-3 py-2 text-gray-400 bg-gray-800 uppercase text-sm font-bold">Save</button>
+                    <button @click="handleReset" class="m-2 inline-block rounded border-2 border-gray-700 px-3 py-2 text-gray-400 bg-gray-800 uppercase text-sm font-bold">Reset</button>
                 </div>
             </div>
         </div>
@@ -74,7 +72,7 @@ export default {
         ...mapState('scores', {
             scores: state => state.scores,
             // newScore: state => state.newScore,
-            isFinished: state => state.isFinished,
+            // isFinished: state => state.isFinished,
         }),
         ...mapGetters({
             character: 'characters/getCharacterById',
@@ -86,18 +84,20 @@ export default {
             return this.score.round[fighter] % 2;
         },
         point(fighter) {
-            if (this.score.winner) return
-
             this.score.round[fighter]++
 
             if (this.score.round[fighter] % 2 == 0) {
                 this.score.set[fighter]++;
             }
 
-            if (this.score.set[fighter] == 2) {
+            if (this.score.set[fighter] !== 0 && this.score.round[fighter] % 2 == 0) {
                 this.score.match.player = fighter == 'player' ? 'Win': 'Lose';
                 this.score.match.opponent = fighter == 'opponent' ? 'Win': 'Lose';
                 this.score.winner = fighter;
+            } else {
+                this.score.match.player = '';
+                this.score.match.opponent = '';
+                this.score.winner = null;
             }
         },
         resetScore() {
@@ -114,25 +114,23 @@ export default {
             saveScore: 'saveScore',
         }),
         handleSave() {
-            if (this.score.winner) {
-                let score = {
-                    date: Date.now(),
-                    player: this.$route.params.player,
-                    opponent: this.$route.params.opponent,
-                    winner: 'player',
-                    rounds: {
-                        player: this.score.round.player,
-                        opponent: this.score.round.opponent,
-                    },
-                    sets: {
-                        player: this.score.set.player,
-                        opponent: this.score.set.opponent,
-                    },
-                    comment: this.comment,
-                };
-                this.saveScore(score);
-                this.resetScore();
-            }
+            let score = {
+                date: Date.now(),
+                player: this.$route.params.player,
+                opponent: this.$route.params.opponent,
+                winner: 'player',
+                rounds: {
+                    player: this.score.round.player,
+                    opponent: this.score.round.opponent,
+                },
+                sets: {
+                    player: this.score.set.player,
+                    opponent: this.score.set.opponent,
+                },
+                comment: this.comment,
+            };
+            this.saveScore(score);
+            this.resetScore();
         },
         handleReset() {
             this.resetScore();

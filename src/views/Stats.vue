@@ -14,36 +14,39 @@
         <div class="text-white">
             <table class="w-full">
                 <tr>
-                    <th>Date</th>
-                    <th>Player</th>
-                    <th>Opponent</th>
+                    <th class="text-left">Date</th>
+                    <th class="text-left">Player</th>
+                    <th class="text-left">Opponent</th>
                     <th>Rounds</th>
                     <th>Sets</th>
                     <th>Winner</th>
-                    <th>Comment</th>
+                    <th class="text-left">Comment</th>
                 </tr>
-            <template v-for="(score, index) in scores">
-                <tr :key="index">
-                    <td>{{ new Date(score.date).toLocaleDateString() }}</td>
-                    <td>{{ score.player }}</td>
-                    <td>{{ score.opponent }}</td>
-                    <td>{{ score.rounds.player }} : {{ score.rounds.opponent }}</td>
-                    <td>{{ score.sets.player }} : {{ score.sets.opponent }}</td>
-                    <td>{{ score.winner }}</td>
-                    <td>{{ score.comment }}</td>
-                </tr>
-            </template>
+                <template v-for="(score, index) in scores">
+                    <tr :key="index">
+                        <td>{{ new Date(score.date).toLocaleDateString() }}</td>
+                        <td>{{ character(score.player).name }}</td>
+                        <td>{{ character(score.opponent).name }}</td>
+                        <td class="text-center">{{ score.rounds.player }} : {{ score.rounds.opponent }}</td>
+                        <td class="text-center">{{ score.sets.player }} : {{ score.sets.opponent }}</td>
+                        <td class="text-center">{{ score.winner == 'player' ? 'Yes' : 'No' }}</td>
+                        <td>{{ score.comment }}</td>
+                    </tr>
+                </template>
             </table>
         </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
     data() {
         return {
         }
+    },
+    created() {
+        this.sortBy('date')
     },
     computed: {
         ...mapState('characters', {
@@ -51,19 +54,17 @@ export default {
         }),
         ...mapState('scores', {
             scores: state => state.scores,
-            newScore: state => state.newScore,
-            isFinished: state => state.isFinished,
         }),
         ...mapGetters({
-            // map `this.doneCount` to `this.$store.getters.doneTodosCount`
             character: 'characters/getCharacterById',
         }),
 
     },
     methods: {
-        getScore(fighter) {
-            return this.score.round[fighter] % 2;
-        },
+        ...mapMutations({
+            // sortByName: 'characters/sortByName',
+            sortBy: 'scores/sortBy',
+        }),
     }
 }
 </script>

@@ -7,7 +7,7 @@
         </div>
         <img class="w-full" :src="`img/featured-${$route.params.player}.jpg`" alt="">
         <div class="absolute bottom-0 p-6">
-            <h1 class="text-5xl text-white font-bold uppercase">{{ player('ryu').name }} <span class="lowercase">vs...</span></h1>
+            <h1 class="text-5xl text-white font-bold uppercase">{{ player($route.params.player).name }} <span class="lowercase">vs...</span></h1>
         </div>
     </div>
 
