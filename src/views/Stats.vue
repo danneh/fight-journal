@@ -29,7 +29,7 @@
                         <td>{{ character(score.opponent).name }}</td>
                         <td class="text-center">{{ score.rounds.player }} : {{ score.rounds.opponent }}</td>
                         <td class="text-center">{{ score.sets.player }} : {{ score.sets.opponent }}</td>
-                        <td class="text-center">{{ score.winner == 'player' ? 'Yes' : 'No' }}</td>
+                        <td class="text-center">{{ score.winner === 'player' ? 'Yes' : 'No' }}</td>
                         <td>{{ score.comment }}</td>
                     </tr>
                 </template>

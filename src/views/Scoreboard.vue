@@ -118,7 +118,7 @@ export default {
                 date: Date.now(),
                 player: this.$route.params.player,
                 opponent: this.$route.params.opponent,
-                winner: 'player',
+                winner: this.score.winner,
                 rounds: {
                     player: this.score.round.player,
                     opponent: this.score.round.opponent,
