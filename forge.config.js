@@ -1,3 +1,5 @@
+const path = require('path')
+
 const osTerminal = process.platform === 'win32' ? 'cmd' : 'bash';
 module.exports = {
 	"packagerConfig": {
@@ -8,13 +10,15 @@ module.exports = {
 			"name": "@electron-forge/maker-squirrel",
 			"config": {
 				"name": "FightJournal",
+				"iconUrl": path.join(__dirname, 'src', 'sfvce_icon.ico'),
+				"setupIcon": path.join(__dirname, 'src', 'sfvce_icon.ico'),
 			},
 		},
 		{
-			name: '@electron-forge/maker-dmg',
-			config: {
-				// background: './assets/dmg-background.png',
-				// format: 'ULFO'
+			"name": '@electron-forge/maker-dmg',
+			"config": {
+				"background": path.join(__dirname, 'src', 'img', 'bg-ryu-chunli.jpg'),
+				"format": 'ULFO'
 			},
 		},
 		{

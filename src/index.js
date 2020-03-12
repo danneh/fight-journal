@@ -30,6 +30,7 @@ const createWindow = () => {
 		width: 1200,
 		height: 715,
 		titleBarStyle: 'hiddenInset',
+		icon: path.join(__dirname, 'sfvce_icon.ico'),
 		webPreferences: {
 			nodeIntegration: true
 		}
@@ -96,7 +97,7 @@ ipcMain.on('set-setting', (event, arg) => {
 })
 ipcMain.on('delete-setting', (event, arg) => {
 	console.log('Deleting setting', arg.option);
-	
+
 	store.delete(arg.option)
 	event.returnValue = 'OK'
 })
