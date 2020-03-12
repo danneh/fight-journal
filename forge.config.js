@@ -1,29 +1,48 @@
 const osTerminal = process.platform === 'win32' ? 'cmd' : 'bash';
 module.exports = {
-	"packagerConfig": {},
+	"packagerConfig": {
+		"asar": true,
+	},
 	"makers": [
 		{
 			"name": "@electron-forge/maker-squirrel",
 			"config": {
 				"name": "FightJournal",
-
-			}
+			},
+		},
+		{
+			name: '@electron-forge/maker-dmg',
+			config: {
+				// background: './assets/dmg-background.png',
+				// format: 'ULFO'
+			},
 		},
 		{
 			"name": "@electron-forge/maker-zip",
 			"platforms": [
 				"darwin",
-				"win32"
-			]
+			],
 		},
 		{
 			"name": "@electron-forge/maker-deb",
-			"config": {}
+			"config": {},
 		},
 		{
 			"name": "@electron-forge/maker-rpm",
-			"config": {}
-		}
+			"config": {},
+		},
+	],
+	"publishers": [
+		{
+			name: '@electron-forge/publisher-github',
+			config: {
+				repository: {
+					owner: 'me',
+					name: 'fight-journal',
+				},
+				prerelease: true,
+			},
+		},
 	],
 	hooks: {
 		postStart: async () => {

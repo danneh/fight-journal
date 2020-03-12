@@ -50,7 +50,6 @@ const router = new Router({
 			component: Characters,
 			beforeEnter: (to, from, next) => {
 				const locked = store.getters['settings/locked'];
-				console.log(locked);
 				
 				if (locked) {
 					return next({

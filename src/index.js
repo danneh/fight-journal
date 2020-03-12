@@ -3,11 +3,15 @@ const Store = require('electron-store');
 const store = new Store();
 const path = require('path')
 
+app.commandLine.appendArgument("--enable-features=Metal");
 app.allowRendererProcessReuse = true;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
 	app.quit();
+}
+if (process.platform !== 'darwin') {
+	require('update-electron-app')();
 }
 
 require('electron-reload')(__dirname, {

@@ -131,6 +131,7 @@ export default {
             };
             this.saveScore(score);
             this.resetScore();
+            this.notifySuccess('saved-score', `Success. Score saved.`, true);
         },
         handleReset() {
             this.resetScore();
