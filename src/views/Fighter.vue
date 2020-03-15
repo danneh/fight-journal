@@ -2,10 +2,10 @@
   <div class="overflow-y-auto">
         <div class="relative">
             <div class="absolute top-0 right-0 p-6">
-                <router-link class="inline-block rounded border-2 border-gray-700 px-3 py-2 text-gray-400 bg-gray-800 uppercase text-sm font-bold" to="/home">Back</router-link>
+                <router-link class="inline-block rounded border-2 border-gray-700 px-3 py-2 text-gray-400 bg-gray-800 uppercase text-sm font-bold" to="/stats">Back</router-link>
             </div>
             <div class="h-half">
-                <img class="object-fit w-full h-full" :src="`img/featured-how-to-play.jpg`" alt="">
+                <img class="object-fit w-full h-full" :src="`img/featured-${$route.params.fighter}.jpg`" alt="">
             </div>
             <div class="absolute bottom-0 p-6">
                 <h1 class="text-5xl text-white font-bold uppercase">Statistics</h1>
@@ -71,10 +71,10 @@
                         <div v-else class="fa-lg fa-layers"></div>
                     </th>
                 </tr>
-                <template v-for="(score, index) in query()">
+                <template v-for="(score, index) in query($route.params.fighter)">
                     <tr :key="index">
                         <td>{{ new Date(score.date).toLocaleDateString() }}</td>
-                        <td><router-link class="" :to="`/stats/${score.player}`">{{ character(score.player).name }}</router-link></td>
+                        <td>{{ character(score.player).name }}</td>
                         <td>{{ character(score.opponent).name }}</td>
                         <td class="text-center">{{ score.rounds.player }} : {{ score.rounds.opponent }}</td>
                         <td class="text-center">{{ score.sets.player }} : {{ score.sets.opponent }}</td>
@@ -122,6 +122,7 @@ export default {
         ...mapGetters({
             character: 'characters/getCharacterById',
             query: 'scores/query',
+            queryFighter: 'scores/queryFighter',
             score: 'scores/getScoreByDate',
             getSortBy: 'scores/getSortBy',
             getSortOrder: 'scores/getSortOrder',

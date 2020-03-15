@@ -37,9 +37,12 @@
 			<div class="flex">
 				<select
 					v-model="lockSelected"
-					:class="{ 'bg-gray-200 text-gray-400 italic': locking }"
+					:class="{ 
+						'bg-gray-200 text-gray-400 italic': locking,
+						'rounded-r-none border-r-0' : lockSelected,
+					}"
 					type="text"
-					class="flex-grow border border-r-0 focus:border-gray-500 shadow-none m-0 py-2 px-3 block focus:outline-none appearance-none leading-normal">
+					class="flex-grow border focus:border-gray-500 shadow-none m-0 py-2 px-3 block focus:outline-none appearance-none leading-normal">
 					<option disabled value="null">Select fighter</option>
 					<option v-for="({id, name}, index) in characters" :key="index" :value="id">{{ name }}</option>
 				</select>
@@ -82,7 +85,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 const { ipcRenderer } = require('electron')
@@ -97,13 +100,17 @@ export default {
 		}
 	},
 	created() {
-		this.sortByName();
+		this.sortBy('name');
 		this.lockSelected = this.lockedCharacter;
 	},
 	computed: {
         ...mapState({
-            characters: state => state.characters.characters, 
-            lockedCharacter: state => state.settings.lockedCharacter,
+        //     characters: state => state.characters.characters, 
+			lockedCharacter: state => state.settings.lockedCharacter,
+			
+		}),
+		...mapGetters({
+			characters: 'characters/query',
         }),
 		// maybeTokenError() {
 		// 	return this.apiToken.length && !this.hasValidApiToken
@@ -118,8 +125,7 @@ export default {
 			exportScores: 'export',
 		}),
 		...mapMutations({
-            sortByName: 'characters/sortByName',
-            // sortBy: 'characters/sortBy',
+            sortBy: 'characters/setSorting',
         }),
 		updateCharacter(event) {
 

@@ -9,6 +9,34 @@ const state = {
 
 // getters
 const getters = {
+	getScoreByDate: (state) => (date) => {
+        return state.scores.find(score => score.date === date);
+	},
+	query: (state) => (fighter) => {
+		let items = [...state.scores]
+
+		if (fighter) {
+			items = items.filter(score => score.player === fighter);
+		}
+
+		if (state.sortBy) {
+			items.sort((a, b) => String(a[state.sortBy]).localeCompare(String(b[state.sortBy])));
+		}
+		if (state.sortOrder === 'desc') {
+			items.reverse();
+		}
+		if (state.sortBy && !['player', 'opponent', 'comment'].includes(state.sortBy)) {
+			items.reverse();
+		}
+		return items;
+	},
+
+	getSortBy: (state) => {
+		return state.sortBy;
+	},
+	getSortOrder: (state) => {
+		return state.sortOrder;
+	}
 }
 
 // actions
@@ -56,6 +84,14 @@ const mutations = {
 			state.sortBy = type;
 		}
 	},
+	setSorting(state, field) {
+		if (state.sortBy == field) {
+			state.sortOrder = state.sortOrder == 'asc' ? 'desc': 'asc';
+		} else {
+			state.sortOrder = 'asc';
+			state.sortBy = field || null;
+		}
+	}
 }
 
 export default {

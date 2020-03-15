@@ -9,13 +9,13 @@
             </div>
             <div class="scoreboard-player">
                 <div class="scoreboard-name border-b-2 border-gray-800 ">{{ character($route.params.player).name }}</div>
-                <div class="scoreboard-counter cursor-pointer border-b-2 border-gray-700" @click="point('player')">{{ getScore('player') }}</div>
+                <div class="scoreboard-counter cursor-pointer border-b-2 border-gray-700" @click.left="point('player')">{{ getScore('player') }}</div>
                 <div class="scoreboard-counter border-b-2 border-gray-700">{{ score.set.player }}</div>
                 <div class="scoreboard-result border-b-2 border-gray-700">{{ score.match.player }}</div>
             </div>
             <div class="scoreboard-opponent">
                 <div class="scoreboard-name">{{ character($route.params.opponent).name }}</div>
-                <div class="scoreboard-counter cursor-pointer" @click="point('opponent')">{{ getScore('opponent') }}</div>
+                <div class="scoreboard-counter cursor-pointer" @click.left="point('opponent')">{{ getScore('opponent') }}</div>
                 <div class="scoreboard-counter">{{ score.set.opponent }}</div>
                 <div class="scoreboard-result">{{ score.match.opponent }}</div>
             </div>

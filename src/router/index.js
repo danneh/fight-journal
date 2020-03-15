@@ -5,6 +5,7 @@ import store from '../store'
 import Home from '../views/Home'
 import Character from '../views/Character'
 import Characters from '../views/Characters'
+import Fighter from '../views/Fighter'
 import Scoreboard from '../views/Scoreboard'
 import Stats from '../views/Stats'
 import Settings from '../views/Settings'
@@ -61,6 +62,16 @@ const router = new Router({
 				}
 				return next();
 			},
+			// meta: {
+			// 	middleware: [
+			// 		hasValidApiToken
+			// 	]
+			// }
+		},
+		{
+			path: "/stats/:fighter",
+			name: 'fighter',
+			component: Fighter,
 			// meta: {
 			// 	middleware: [
 			// 		hasValidApiToken
