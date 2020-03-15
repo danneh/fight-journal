@@ -3,8 +3,9 @@ const Store = require('electron-store');
 const store = new Store();
 const path = require('path')
 
-app.commandLine.appendArgument("--enable-features=Metal");
-app.allowRendererProcessReuse = true;
+app.commandLine.appendArgument("--enable-features=Metal"); // Fixes log issues with rendering.
+app.dock.setIcon(path.join(__dirname, 'img', 'sfvce-logo.png')); // Sets icon on macOS
+app.allowRendererProcessReuse = true; // ?
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
