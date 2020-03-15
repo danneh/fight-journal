@@ -391,7 +391,7 @@ const Characters = [
     },
     {
         id: 'seth',
-        name: 'seth',
+        name: 'Seth',
         slogan: 'King of Chaos',
         power: 3,
         health: 3,
