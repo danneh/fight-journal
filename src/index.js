@@ -4,7 +4,9 @@ const store = new Store();
 const path = require('path')
 
 app.commandLine.appendArgument("--enable-features=Metal"); // Fixes log issues with rendering.
-app.dock.setIcon(path.join(__dirname, 'img', 'sfvce-logo.png')); // Sets icon on macOS
+if (process.plattform === 'darwin') {
+	app.dock.setIcon(path.join(__dirname, 'img', 'sfvce-logo.png')); // Sets icon on macOS
+}
 app.allowRendererProcessReuse = true; // ?
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
