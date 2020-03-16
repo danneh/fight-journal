@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Swal from 'sweetalert2'
 import { EventManager } from '../utilities'
 import "@sweetalert2/theme-dark/dark.scss";
+import moment from 'moment'
 
 Vue.mixin({
 	created() {
@@ -50,6 +51,9 @@ Vue.mixin({
 				// type: 'error',
 				title: 'string' === typeof message ? message : this.__('Error', 'ml-slider')
 			})
+		},
+		moment(date) {
+			return moment(date)
 		}
 	}
 })

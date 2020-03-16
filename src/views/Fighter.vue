@@ -73,7 +73,7 @@
                 </tr>
                 <template v-for="(score, index) in query($route.params.fighter)">
                     <tr :key="index">
-                        <td>{{ new Date(score.date).toLocaleDateString() }}</td>
+                        <td>{{ moment(score.date).fromNow() }}</td>
                         <td>{{ character(score.player).name }}</td>
                         <td>{{ character(score.opponent).name }}</td>
                         <td class="text-center">{{ score.rounds.player }} : {{ score.rounds.opponent }}</td>

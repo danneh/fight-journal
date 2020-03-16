@@ -86,13 +86,14 @@
             </button>
         </div>
         <div class="characters-grid">
-            <template v-for="({id, name, power, health, mobility, technique, range }) in query">
+            <template v-for="({id, name, slogan, power, health, mobility, technique, range }) in query">
                 <div class="card" :key="id">
                     <router-link class="card-link" :to="`/character/${id}`">
                         <figure class="card-image">
                             <img :src="imgSrc(id)" :alt="name">
                             <figcaption class="card-caption">
                                 <div>{{ name }}</div>
+                                <div v-if="showStats" class="text-xs text-gray-400 px-3 whitespace-normal text-center leading-tight pb-8">{{ slogan }}</div>
                             </figcaption>
                             <!-- <div class="text-xs uppercase">Power</div> -->
                             <div v-if="showStats" class="card-stats">
@@ -175,7 +176,7 @@ export default {
                         transform: scale(1.2); 
                     }
                     .card-caption {
-                        @apply flex;
+                        @apply flex flex-col;
                         background-color: rgba(0, 0, 0, 0.5);
                     }
                 }
@@ -217,7 +218,7 @@ export default {
     }
     .sorter {
         @apply flex justify-evenly text-white py-1;
-        
+
         button {
             @apply flex items-center text-xs font-bold uppercase;
 

@@ -2,8 +2,8 @@ import { ipcRenderer } from 'electron';
 // initial state
 const state = {
 	scores: ipcRenderer.sendSync('get-setting', 'scores') || [],
-	sortBy: 'date',
-	sortOrder: 'desc',
+	sortBy: 'lastPlayed',
+	sortOrder: 'asc',
 
 }
 
@@ -31,12 +31,60 @@ const getters = {
 		return items;
 	},
 
+	queryStats: (state) => {
+		let items = [...state.scores]
+		
+		items = Object.values(items.reduce((acc, obj) => {
+			let key = obj['player']
+			if (!acc[key]) {
+				acc[key] = {
+					fighter: obj.player,
+					total: 1,
+					wins: obj.winner === 'player' ? 1 : 0,
+					winrate: obj.winner === 'player' ? 100 : 0,
+					lastPlayed: obj.date,
+				}
+			} else {
+				acc[key].total ++
+				acc[key].wins += obj.winner === 'player' ? 1 : 0
+				acc[key].lastPlayed = acc[key].lastPlayed > obj.date ? acc[key].lastPlayed : obj.date
+				acc[key].winrate = Math.round(acc[key].wins / acc[key].total * 100)
+			}
+			return acc
+		}, {}))
+
+		if (state.sortBy) {
+			
+			if (['fighter'].includes(state.sortBy)) {
+				items.sort((a, b) => a[state.sortBy].localeCompare(b[state.sortBy]));
+			}
+			if (['total', 'wins', 'winrate', 'lastPlayed'].includes(state.sortBy)) {
+				items.sort((a, b) => {
+					return a[state.sortBy] - b[state.sortBy]
+				})
+				items.reverse()
+			}
+		}
+
+		if (state.sortOrder === 'desc') {
+			items.reverse();
+		}
+
+		return items;
+	},
+
 	getSortBy: (state) => {
 		return state.sortBy;
 	},
+
 	getSortOrder: (state) => {
 		return state.sortOrder;
-	}
+	},
+
+	getTotal: (state, getters) => {
+		return getters.queryStats.reduce((prev, curr) => prev > curr.total ? prev : curr.total, 0)
+		 
+	},
 }
 
 // actions
@@ -72,18 +120,18 @@ const mutations = {
 		state.scores.push(payload);
 		ipcRenderer.sendSync('set-setting', {option: 'scores', value: state.scores})
 	},
-	sortBy(state, type) {
-		if (type === state.sortBy) {
-			state.scores.reverse();
-			state.sortOrder = state.sortOrder === 'desc' ? 'asc': 'desc';
-		}
-		else {
-			state.scores.sort((a, b) => {
-				return String(a[type]).localeCompare(String(b[type]))
-			});
-			state.sortBy = type;
-		}
-	},
+	// sortBy(state, type) {
+	// 	if (type === state.sortBy) {
+	// 		state.scores.reverse();
+	// 		state.sortOrder = state.sortOrder === 'desc' ? 'asc': 'desc';
+	// 	}
+	// 	else {
+	// 		state.scores.sort((a, b) => {
+	// 			return String(a[type]).localeCompare(String(b[type]))
+	// 		});
+	// 		state.sortBy = type;
+	// 	}
+	// },
 	setSorting(state, field) {
 		if (state.sortBy == field) {
 			state.sortOrder = state.sortOrder == 'asc' ? 'desc': 'asc';
