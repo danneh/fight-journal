@@ -21,7 +21,9 @@ module.exports = {
 			},
 		},
 	},
-	variants: {},
+	variants: {
+		margin: ['responsive', 'first', 'last'],
+	},
 	plugins: [
 		require('tailwindcss-transition')({
 			standard: 'all .2s ease',
