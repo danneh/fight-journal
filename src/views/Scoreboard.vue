@@ -48,6 +48,10 @@ export default {
     data() {
         return {
             score: {
+                current: {
+                    player: 0,
+                    opponent: 0,
+                },
                 round: {
                     player: 0,
                     opponent: 0
@@ -81,19 +85,34 @@ export default {
     },
     methods: {
         getScore(fighter) {
-            return this.score.round[fighter] % 2;
+            return this.score.current[fighter];
         },
         point(fighter) {
+            this.score.current[fighter]++
             this.score.round[fighter]++
 
-            if (this.score.round[fighter] % 2 == 0) {
+            if (this.score.current[fighter] % 2 == 0) {
                 this.score.set[fighter]++;
+                this.score.current['player'] = 0;
+                this.score.current['opponent'] = 0;
             }
 
-            if (this.score.set[fighter] !== 0 && this.score.round[fighter] % 2 == 0) {
-                this.score.match.player = fighter == 'player' ? 'Win': 'Lose';
-                this.score.match.opponent = fighter == 'opponent' ? 'Win': 'Lose';
-                this.score.winner = fighter;
+            if (this.score.set[fighter] !== 0 && this.score.current[fighter] % 2 == 0 ) {
+                if (this.score.set.player == this.score.set.opponent) {
+                    this.score.match.player = 'Draw';
+                    this.score.match.opponent = 'Draw';
+                    this.score.winner = null;
+                }
+                else if (this.score.set.player > this.score.set.opponent) {
+                    this.score.match.player = 'Win';
+                    this.score.match.opponent = 'Lose';
+                    this.score.winner = 'player'; 
+                }
+                else if (this.score.set.player < this.score.set.opponent) {
+                    this.score.match.player = 'Lose';
+                    this.score.match.opponent = 'Win';
+                    this.score.winner = 'opponent';
+                }
             } else {
                 this.score.match.player = '';
                 this.score.match.opponent = '';
@@ -103,6 +122,8 @@ export default {
         resetScore() {
             this.score.match.player = null;
             this.score.match.opponent = null;
+            this.score.current.player = 0;
+            this.score.current.opponent = 0;
             this.score.round.player = 0;
             this.score.round.opponent = 0;
             this.score.set.player = 0;

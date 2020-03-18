@@ -3,9 +3,9 @@ const Store = require('electron-store');
 const store = new Store();
 const path = require('path')
 
-if (process.plattform === 'darwin') {
+if (process.platform === 'darwin') {
 	app.commandLine.appendArgument("--enable-features=Metal"); // Fixes log issues with rendering.
-	app.dock.setIcon(path.join(__dirname, 'img', 'sfvce-logo.png')); // Sets icon on macOS
+	// app.dock.setIcon(path.join(__dirname, 'img', 'sfvce-logo.png')); // Sets icon on macOS
 }
 app.allowRendererProcessReuse = true; // https://github.com/electron/electron/issues/18397
 
@@ -33,7 +33,7 @@ const createWindow = () => {
 		width: 1200,
 		height: 715,
 		titleBarStyle: 'hiddenInset',
-		icon: path.join(__dirname, 'sfvce_icon.ico'),
+		icon: path.join(__dirname, 'img', 'sfvce-logo.png'),
 		webPreferences: {
 			nodeIntegration: true
 		}

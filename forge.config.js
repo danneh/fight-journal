@@ -3,14 +3,15 @@ const path = require('path')
 const osTerminal = process.platform === 'win32' ? 'cmd' : 'bash';
 module.exports = {
 	"packagerConfig": {
-		"asar": true,
+		"asar": true, // make asar (tarball) to fix path lenght issues on windows
+		"icon": path.join(__dirname, 'src', 'sfv-ryu-logo'), // Leave out extension to autoset .ico on windows and .icns on mac
 	},
 	"makers": [
 		{
 			"name": "@electron-forge/maker-squirrel",
 			"config": {
 				"iconUrl": "https://raw.githubusercontent.com/danneh/fight-journal/master/src/sfvce_icon.ico",
-				"setupIcon": path.join(__dirname, 'src', 'sfvce_icon.ico'),
+				"setupIcon": path.join(__dirname, 'src', 'sfv-ryu-logo.ico'),
 			},
 		},
 		{
