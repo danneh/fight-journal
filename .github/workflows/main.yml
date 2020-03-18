@@ -25,17 +25,29 @@ jobs:
       - run: npm ci
       - run: npm run make
 
+      - name: Rename mac app
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          find ./out/make/zip/darwin/x64 -type f -name 'Fight*' -execdir mv {} app.zip ';'
+
+      - name: Rename windows app
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          find ./out/make/squirrel.windows/x64 -type f -name '*.exe' -execdir mv {} app.exe ';'
+
       - uses: actions/upload-artifact@v1
         if: runner.os == 'macOS'
         with:
           name: macos
-          path: out/make/zip/darwin/x64
+          path: out/make/zip/darwin/x64/app.zip
 
       - uses: actions/upload-artifact@v1
         if: runner.os == 'Windows'
         with:
           name: windows
-          path: out/make/squirrel.windows/x64
+          path: out/make/squirrel.windows/x64/app.exe
 
   release:
     needs: build
@@ -73,7 +85,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path:  './macos/Fight\ Journal-darwin-x64-${{ steps.release-version.outputs.appversion }}.zip'
+          asset_path: ./macos/app.zip
           asset_name: fight-journal-${{ steps.release-version.outputs.appversion }}-mac.zip
           asset_content_type: application/zip
 
@@ -89,7 +101,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path:  './windows/Fight\ Journal-${{ steps.release-version.outputs.appversion }}\ Setup.exe'
+          asset_path: ./windows/app.exe
           asset_name: fight-journal-${{ steps.release-version.outputs.appversion }}-win64-setup.exe
           asset_content_type: application/octet-stream
 
