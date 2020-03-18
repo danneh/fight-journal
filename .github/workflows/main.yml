@@ -41,13 +41,13 @@ jobs:
         if: runner.os == 'macOS'
         with:
           name: macos
-          path: ./
+          path: out/make/zip/darwin/x64/app.zip
 
       - uses: actions/upload-artifact@v1
         if: runner.os == 'Windows'
         with:
           name: windows
-          path: ./
+          path: out/make/squirrel.windows/x64/app.exe
 
   release:
     needs: build
