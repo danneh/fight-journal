@@ -37,13 +37,13 @@ module.exports = {
 	],
 	"publishers": [
 		{
-			name: '@electron-forge/publisher-github',
-			config: {
-				repository: {
-					owner: 'me',
-					name: 'fight-journal',
+			"name": '@electron-forge/publisher-github',
+			"config": {
+				"repository": {
+					"owner": 'me',
+					"name": 'fight-journal',
 				},
-				prerelease: true,
+				"prerelease": true,
 			},
 		},
 	],
@@ -51,44 +51,45 @@ module.exports = {
 		postStart: async () => {
 			if (process.env.npm_lifecycle_event === 'start') {
 				terminal = require('child_process').spawn(osTerminal)
-				setTimeout(() => {
-					terminal.stdin.write('npm run mix-watch\n')
-					terminal.stdin.end()
-				}, 1000)
+				terminal.stdin.write('npm run mix-watch\n')
+				terminal.stdin.end()
 
 				terminal.stdout.on('data', data => {
 					console.log(`${data}`)
 				})
 
 				terminal.stderr.on('data', data => {
-					console.log(`Error: ${data}`)
+					// console.log(`Error: ${data}`)
 				})
 
-				terminal.on('close', code => {
-					console.log(`child process exited with code ${code}`)
+				await new Promise((resolve, reject) => {
+					terminal.on('close', code => {
+						console.log(` child process exited with code ${code}`)
+						return resolve();
+					})
 				})
 			}
-			return true
 		},
 		generateAssets: async () => {
 			if (process.env.npm_lifecycle_event === 'make') {
+				
 				terminal = require('child_process').spawn(osTerminal)
-				setTimeout(function () {
-					terminal.stdin.write('npm run mix-build\n')
-					terminal.stdin.end()
-					return true
-				}, 1000)
+				terminal.stdin.write('npm run mix-build\n')
+				terminal.stdin.end()
 
 				terminal.stdout.on('data', data => {
-					console.log(`${data}`)
+					console.log(` ${data}`)
 				})
 
 				terminal.stderr.on('data', data => {
-					console.log(`${data}`)
+					// console.log(`${data}`)
 				})
 
-				terminal.on('close', code => {
-					console.log(`child process exited with code ${code}`)
+				await new Promise((resolve, reject) => {
+					terminal.on('close', code => {
+						console.log(` child process exited with code ${code}`)
+						return resolve();
+					})
 				})
 			}
 		}
