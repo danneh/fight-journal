@@ -3,19 +3,19 @@ const Store = require('electron-store');
 const store = new Store();
 const path = require('path')
 
-app.commandLine.appendArgument("--enable-features=Metal"); // Fixes log issues with rendering.
 if (process.plattform === 'darwin') {
+	app.commandLine.appendArgument("--enable-features=Metal"); // Fixes log issues with rendering.
 	app.dock.setIcon(path.join(__dirname, 'img', 'sfvce-logo.png')); // Sets icon on macOS
 }
-app.allowRendererProcessReuse = true; // ?
+app.allowRendererProcessReuse = true; // https://github.com/electron/electron/issues/18397
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
 	app.quit();
 }
-if (process.platform !== 'darwin') {
-	require('update-electron-app')();
-}
+// if (process.platform !== 'darwin') {
+// 	require('update-electron-app')();
+// }
 
 require('electron-reload')(__dirname, {
 	electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron')
