@@ -61,7 +61,7 @@ module.exports = {
 				})
 
 				terminal.stderr.on('data', data => {
-					// console.log(`Error: ${data}`)
+					console.log(`Error: ${data}`)
 				})
 
 				terminal.on('close', code => {
@@ -76,7 +76,7 @@ module.exports = {
 				setTimeout(function () {
 					terminal.stdin.write('npm run mix-build\n')
 					terminal.stdin.end()
-					// return true
+					return true
 				}, 1000)
 
 				terminal.stdout.on('data', data => {
@@ -84,7 +84,7 @@ module.exports = {
 				})
 
 				terminal.stderr.on('data', data => {
-					// console.log(`${data}`)
+					console.log(`${data}`)
 				})
 
 				terminal.on('close', code => {
