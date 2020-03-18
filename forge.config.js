@@ -9,7 +9,7 @@ module.exports = {
 		{
 			"name": "@electron-forge/maker-squirrel",
 			"config": {
-				"iconUrl": path.join(__dirname, 'src', 'sfvce_icon.ico'),
+				"iconUrl": "https://raw.githubusercontent.com/danneh/fight-journal/master/src/sfvce_icon.ico",
 				"setupIcon": path.join(__dirname, 'src', 'sfvce_icon.ico'),
 			},
 		},
