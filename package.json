@@ -2,7 +2,7 @@
 	"name": "fight-journal",
 	"productName": "Fight Journal",
 	"author": "Daniel Hjellström",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Street Fighter V statistics",
 	"repository": {
 		"type": "git",

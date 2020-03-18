@@ -1,31 +1,149 @@
 name: Build/release
 
-on: push
+on:
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
-  release:
+  build:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        node: [ 12 ]
+        os: [ macos-latest, windows-latest ]
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Install Node.js, NPM and Yarn
+      - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ matrix.node }}
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+      - run: npm ci
+      - run: npm run make
+
+      - uses: actions/upload-artifact@v1
+        if: runner.os == 'macOS'
         with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
+          name: macos
+          path: out/make/zip/darwin/x64
 
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      - uses: actions/upload-artifact@v1
+        if: runner.os == 'Windows'
+        with:
+          name: windows
+          path: out/make/squirrel.windows/x64
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automated release. Read the changelog for more info
+          draft: false
+          prerelease: false
+        
+      - name: Get release version number
+        id: release-version
+        run: |
+          appversion="${GITHUB_REF/refs\/tags\/v/}"
+          echo $appversion
+          echo ::set-output name=appversion::$(echo $appversion)
+
+      - name: Get macOS artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: macos
+
+      - name: Upload macOS Asset
+        id: upload-mac-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path:  './macos/Fight\ Journal-darwin-x64-${{ steps.release-version.outputs.appversion }}.zip'
+          asset_name: fight-journal-${{ steps.release-version.outputs.appversion }}-mac.zip
+          asset_content_type: application/zip
+
+      - name: Get Windows artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: windows
+
+      - name: Upload Windows Asset
+        id: upload-win-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path:  './windows/Fight\ Journal-${{ steps.release-version.outputs.appversion }}\ Setup.exe'
+          asset_name: fight-journal-${{ steps.release-version.outputs.appversion }}-win64-setup.exe
+          asset_content_type: application/octet-stream
+
+
+  # build_windows:
+  #   needs: build_macos
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       node: [ 12 ]
+  #       os: [ windows-latest ]
+
+  #   steps:
+  #     - name: Setup variables
+  #       id: get_variables
+  #       run: |
+  #         set appversion=%github_ref%
+  #         echo %appversion%
+  #         set appversion=%appversion:refs/tags/v=%
+  #         echo ::set-output name=appversion::$(echo %appversion%)
+  #       env:
+  #         github_ref: ${{ github.ref }}
+
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+
+  #     - name: Setup node
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node }}
+
+  #     - run: npm ci
+  #     - run: npm run make
+
+  #     # - name: Create Release
+  #     #   id: create_release
+  #     #   uses: actions/create-release@latest
+  #     #   env:
+  #     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+  #     #   with:
+  #     #     tag_name: ${{ github.ref }}
+  #     #     release_name: Release ${{ github.ref }}
+  #     #     body: |
+  #     #       Read the docs for more info
+  #     #     draft: false
+  #     #     prerelease: false
+
+  #     - name: Upload Release Asset
+  #       id: upload-release-asset 
+  #       uses: actions/upload-release-asset@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+  #         asset_path:  ./out/make/squirrel.windows/x64/electron-forge-github-workflow-1.0.6-setup.exe
+  #         asset_name: electron-forge-github-workflow-1.0.6-setup.exe
+  #         asset_content_type: application/octet-stream
